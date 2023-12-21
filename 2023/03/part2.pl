@@ -17,11 +17,9 @@ while(<>){
 
     my $offset = 0;
     my @gears = m/\*/g;
-    print scalar @gears, " stars on row $row\n";
 
     for (@gears){
         my $found_at = index($line, '*', $offset);
-        print "row: $row, star found at $found_at with offset of $offset\n";
         $offset = $found_at + 1;
 
         push @stars, {row => $row, col => $found_at};
@@ -40,27 +38,32 @@ for my $star (@stars){
     my $row = $star->{row};
     my $col = $star->{col};
     
+    $star->{at}->{1} = $char[$row -1][$col -1] =~ m/\d/;
+    $star->{at}->{2} = $char[$row -1][$col   ] =~ m/\d/;
+    $star->{at}->{3} = $char[$row -1][$col +1] =~ m/\d/;
+    $star->{at}->{4} = $char[$row   ][$col -1] =~ m/\d/;
+    $star->{at}->{6} = $char[$row   ][$col +1] =~ m/\d/;
+    $star->{at}->{7} = $char[$row +1][$col -1] =~ m/\d/;
+    $star->{at}->{8} = $char[$row +1][$col   ] =~ m/\d/;
+    $star->{at}->{9} = $char[$row +1][$col +1] =~ m/\d/;
+
+
     if ($row > 0){
-        $star->{number_at}->{1} = extract_number_at($row -1, $col -1) if $char[$row -1][$col -1] =~ m/\d/;
-        $star->{number_at}->{3} = extract_number_at($row -1, $col +1) if $char[$row -1][$col +1] =~ m/\d/;
+        $star->{number_at}->{1} = extract_number_at($row -1, $col -1) if $star->{at}->{1};
+        $star->{number_at}->{2} = extract_number_at($row -1, $col)    if $star->{at}->{2} and ! $star->{at}->{1};
+        $star->{number_at}->{3} = extract_number_at($row -1, $col +1) if $star->{at}->{3} and ! $star->{at}->{2};
     }
     if ($col > 0){
-        $star->{number_at}->{4} = extract_number_at($row,    $col -1) if $char[$row   ][$col -1] =~ m/\d/;
+        $star->{number_at}->{4} = extract_number_at($row, $col -1) if $star->{at}->{4};
     }
     if ($col < 139){
-        $star->{number_at}->{6} = extract_number_at($row,    $col +1) if $char[$row   ][$col +1] =~ m/\d/;
+        $star->{number_at}->{6} = extract_number_at($row, $col +1) if $star->{at}->{6};
     }
     if ($row < 139){
-        $star->{number_at}->{7} = extract_number_at($row +1, $col -1) if $char[$row +1][$col -1] =~ m/\d/;
-        $star->{number_at}->{9} = extract_number_at($row +1, $col +1) if $char[$row +1][$col +1] =~ m/\d/;
+        $star->{number_at}->{7} = extract_number_at($row +1, $col -1) if $star->{at}->{7};
+        $star->{number_at}->{8} = extract_number_at($row +1, $col)    if $star->{at}->{8} and ! $star->{at}->{7};
+        $star->{number_at}->{9} = extract_number_at($row +1, $col +1) if $star->{at}->{9} and ! $star->{at}->{8};
     }
-
-    # it is possible that starting at 1 and 3 we have found the same number
-    # if so then remove 3
-    delete $star->{number_at}->{3} if $star->{number_at}->{1} eq $star->{number_at}->{3};
-    # same for positions 7 and 9
-    delete $star->{number_at}->{9} if $star->{number_at}->{7} eq $star->{number_at}->{9};
-    print Dumper $star;
 }
 
 my $sum = 0;
@@ -70,18 +73,12 @@ for my $star (@stars){
     my @values = values %$numbers;
     my $count = scalar keys %$numbers;
     $sum += @values[0] * @values[1] if $count == 2;
-    print $star->{row}, ',',$star->{col}, ": ($count) ",@values[0], ' x ', @values[1], ' = ',  @values[0] * @values[1]," subtotal: $sum\n";
 }
 
 print "Total score: $sum\n";
 
-# print Dumper \@stars;
-# print scalar @stars, "\n";
-
 sub extract_number_at {
     my($row, $col) = @_;
-
-    print "($row, $col) ", $char[$row][$col], "\n";
 
     my $num_str = '';
 
