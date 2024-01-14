@@ -40,12 +40,12 @@ sub is_valid_game {
     # the games is valid if  bag contained only 12 red cubes, 13 green cubes, and 14 blue cubes
 
     for my $cube_set (@{$data->{cubes}}){
-	$cube_set =~ m/(\d+) (\w+)/ or die $cube_set;
-        my $count = $1 + 0;	
-        my $colour = $2;	
-	return 0 if $colour eq 'red' and $count > 12;
-	return 0 if $colour eq 'green' and $count > 13;
-	return 0 if $colour eq 'blue' and $count > 14;
+    $cube_set =~ m/(\d+) (\w+)/ or die $cube_set;
+        my $count = $1 + 0;    
+        my $colour = $2;    
+    return 0 if $colour eq 'red' and $count > 12;
+    return 0 if $colour eq 'green' and $count > 13;
+    return 0 if $colour eq 'blue' and $count > 14;
     }
     return 1;
 }

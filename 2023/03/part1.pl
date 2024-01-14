@@ -11,15 +11,15 @@ my $line_length = 0;
 
 while(<>){
     print;
-	chomp;
-	my $line = $_;
+    chomp;
+    my $line = $_;
     $line_length = length($line);
 
     my @digit_strings = $line =~ /\d+/g;
     
     # add each digit_string to @numbers along with its position row, col
     my $offset =0;
-	for my $n (@digit_strings){
+    for my $n (@digit_strings){
         my $obj->{value} = $n;
         $obj->{row} = $total_rows;
         $obj->{col} = index($line, $n, $offset);
@@ -33,7 +33,7 @@ while(<>){
     push @symbols, \@line_array;
 
     $total_rows++;
-}	
+}    
     
 my $sum = 0;
 for my $n (@numbers){

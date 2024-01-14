@@ -39,15 +39,15 @@ sub power_value_of {
 
     my $max_count = {
         red => 0,
-	green => 0,
-	blue => 0
+    green => 0,
+    blue => 0
     };
 
     for my $cube_set (@{$data->{cubes}}){
-	$cube_set =~ m/(\d+) (\w+)/ or die $cube_set;
-        my $count = $1 + 0;	
-        my $colour = $2;	
-	$max_count->{$colour} = $count if $count > $max_count->{$colour};
+    $cube_set =~ m/(\d+) (\w+)/ or die $cube_set;
+        my $count = $1 + 0;    
+        my $colour = $2;    
+    $max_count->{$colour} = $count if $count > $max_count->{$colour};
     }
     return $max_count->{red} * $max_count->{green} * $max_count->{blue};
 }

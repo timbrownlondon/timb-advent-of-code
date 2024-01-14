@@ -5,7 +5,7 @@ use strict;
 while(<>){
     chomp;
     for (split ''){
-	    print "$_\n";
+        print "$_\n";
     }
 }
 

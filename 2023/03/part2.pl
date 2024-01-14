@@ -10,7 +10,7 @@ my $row = 0;
 # populate 2D @char array
 # populate @stars array with locations of star characters (aka gears)
 while(<>){
-	chomp;
+    chomp;
     my $line = $_;
     my @line_array = split '', $line;  
     push @char, \@line_array;
@@ -25,7 +25,7 @@ while(<>){
         push @stars, {row => $row, col => $found_at};
     }
     $row++;
-}	
+}    
     
 
 for my $star (@stars){
