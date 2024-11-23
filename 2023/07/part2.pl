@@ -81,11 +81,11 @@ sub choose_call_for {
 
     return 'five_kind'  if $count_string eq '5';
     return 'four_kind'  if $count_string eq '4-1';
-       return 'full_house' if $count_string eq '3-2';
-       return 'three_kind' if $count_string eq '3-1-1';
-       return 'two_pair'   if $count_string eq '2-2-1';
-       return 'one_pair'   if $count_string eq '2-1-1-1';
-       return 'high_card ' if $count_string eq '1-1-1-1-1';
+    return 'full_house' if $count_string eq '3-2';
+    return 'three_kind' if $count_string eq '3-1-1';
+    return 'two_pair'   if $count_string eq '2-2-1';
+    return 'one_pair'   if $count_string eq '2-1-1-1';
+    return 'high_card ' if $count_string eq '1-1-1-1-1';
 }
 
 sub choose_call_with_jokers {
@@ -96,11 +96,11 @@ sub choose_call_with_jokers {
     return 'five_kind'  if $count_string eq '5'; 
     return 'five_kind'  if $count_string eq '4-1';
     return 'five_kind'  if $count_string eq '3-2';
-       return 'four_kind'  if $count_string eq '3-1-1';
-       return 'full_house' if $count_string eq '2-2-1' and $number_of_jokers == 1;
-       return 'four_kind'  if $count_string eq '2-2-1' and $number_of_jokers == 2;
-       return 'three_kind' if $count_string eq '2-1-1-1';
-       return 'one_pair'   if $count_string eq '1-1-1-1-1';
+    return 'four_kind'  if $count_string eq '3-1-1';
+    return 'full_house' if $count_string eq '2-2-1' and $number_of_jokers == 1;
+    return 'four_kind'  if $count_string eq '2-2-1' and $number_of_jokers == 2;
+    return 'three_kind' if $count_string eq '2-1-1-1';
+    return 'one_pair'   if $count_string eq '1-1-1-1-1';
 
     die 'choose_call_with_jokers() cannot dermine the call ', $number_of_jokers;
 }
@@ -125,7 +125,7 @@ sub has_higher_rank {
     my $call_a = $a->{call};
     my $call_b = $b->{call};
 
-       return is_better_hand( $a->{hand}, $b->{hand} ) if $call_a eq $call_b;
+    return is_better_hand( $a->{hand}, $b->{hand} ) if $call_a eq $call_b;
         
     return $call_order->{$call_a} <=> $call_order->{$call_b};
 }
