@@ -1,4 +1,4 @@
 Wed 11 Dec 2024
 
-- part1: 660 - correct
-- part1: 689 - correct
+- Part 1: 660 - correct
+- Part 2: 689 - correct
