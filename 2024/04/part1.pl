@@ -7,10 +7,15 @@ sub main{
   my @lines = <>;
   my $total = 0;
 
+print count_matches('XMAS', \@lines), "\n";
+print count_matches('SAMX', \@lines), "\n";
+
   $total += count_matches('XMAS', \@lines);
   $total += count_matches('SAMX', \@lines);
 
   my $rotated = rotate_lines(\@lines);
+print count_matches('XMAS', $rotated), "\n";
+print count_matches('SAMX', $rotated), "\n";
   $total += count_matches('XMAS', $rotated);
   $total += count_matches('SAMX', $rotated);
 
@@ -72,5 +77,5 @@ sub tests{
   }
 }
 
-# choose to run main(0 or tests()
+# choose to run main() or tests()
 ($ARGV[0] =~ m/test/)? tests() : main();
