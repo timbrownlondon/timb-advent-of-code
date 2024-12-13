@@ -16,4 +16,7 @@ $total += $WS->count_matches('SAMX');
 $total += $WS->count_matches_on_rotated('XMAS');
 $total += $WS->count_matches_on_rotated('SAMX');
 
+$total += $WS->count_matches_on_diagonals('XMAS');
+$total += $WS->count_matches_on_diagonals('SAMX');
+
 print "Total: $total\n";

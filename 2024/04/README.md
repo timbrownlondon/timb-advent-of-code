@@ -1,3 +1,2 @@
-Wed 11 Dec 2024
-
-- Part 1: (first try) 883 - too low
+- Part 1: (first try) 883 - too low (Wed 11 Dec 2024)
+- Part 1: (second try) 2557 - correct (Fri 13 Dec 2024)

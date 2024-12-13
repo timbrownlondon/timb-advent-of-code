@@ -1,4 +1,4 @@
-use Test::More tests => 8;
+use Test::More tests => 10;
 use lib '.';
 use Data::Dumper;
 
@@ -23,6 +23,9 @@ use_ok WordSearch;
   is($WS->height(), 4, 'height()');
 
   is_deeply($WS->as_matrix(), [['a','b','c'], ['d','e','f'], ['g','h','i'], ['j','k','l']], 'as_matrix()');
+
+  is_deeply($WS->right_diagonals(), ['aei', 'bf', 'c', 'dhl', 'gk', 'j'],'right_diagonals()');
+  is_deeply($WS->left_diagonals(),  ['a', 'db', 'gec', 'jhf', 'ki', 'l'],'left_diagonals()');
 
   my $expected = ['adgj','behk','cfil'];
   is_deeply($WS->rotated(), $expected, 'rotated() 4x3');
