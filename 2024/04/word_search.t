@@ -1,4 +1,4 @@
-use Test::More tests => 10;
+use Test::More tests => 16;
 use lib '.';
 use Data::Dumper;
 
@@ -35,4 +35,29 @@ use_ok WordSearch;
   my $WS = WordSearch->new(['T__','I_T','M_I','__M']);
   
   is($WS->count_matches_on_rotated('TIM'), 2, 'count_matches_on_rotated()');
+}
+
+{
+  my $WS = WordSearch->new([ 
+    '.M.S......',
+    '..A..MSMS.',
+    '.M.S.MAA..',
+    '..A.ASMSM.',
+    '.M.S.M....',
+    '.....A....',
+    'S.S.S.S.S.',
+    '.A.A.A.A..',
+    'M.M.M.M.M.',
+    '..........']);
+
+  is($WS->value_at(0,0), '.', 'value_at(0,0)');
+  is($WS->value_at(1,0), 'M', 'value_at(1,0)');
+
+  is($WS->concatenate_cells([1,0],[2,1],[3,2]),'MAS', 'contatenate_cells()');-
+
+  ok($WS->is_center_of_X_MAS([2,1]), 'is_center_of_X_MAS');
+
+  is_deeply($WS->coordinates_of_A(), [[2,1],[6,2],[7,2],[2,3],[4,3],[5,5],[1,7],[3,7],[5,7],[7,7]], 'coordinates_of_A()');
+  is($WS->count_X_MAS(), 9, 'count_X_MAS()');
+
 }
