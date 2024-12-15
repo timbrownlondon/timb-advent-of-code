@@ -1,4 +1,4 @@
-use Test::More tests => 11;
+use Test::More tests => 18;
 use lib '.';
 use Data::Dumper;
 use_ok PrintingSpec;
@@ -58,4 +58,14 @@ ok(! $PS->update_is_valid([75,97,47,61,53]), 'update_is_valid() returns false');
 
 is($PS->sum_of_middle_element_of_valid_updates(), 143, 'sum_of_middle_element_of_valid_updates()');
 
+is_deeply($PS->invalid_updates(), [[75,97,47,61,53],[61,13,29],[97,13,75,29,47]], 'invalid_updates()');
+
+is($PS->index_of([1,2,3,4,5], 4), 3, 'index_of()');
+is($PS->index_of([1,2,3,4,5], 6), -1, 'index_of()');
+
+is_deeply($PS->modify_update_for_rule([75,97,47,61,53], [97,75]), [97,75,47,61,53], 'modify_update_for_rule()');
+is_deeply($PS->modify_update_for_rule([61,13,29], [29,13]), [61,29,13], 'modify_update_for_rule()');
+is_deeply($PS->modify_update_for_rule([97,13,75,29,47], [47,13]), [97,47,75,29,13], 'modify_update_for_rule()');
+
+is_deeply($PS->make_valid_update_from([75,97,47,61,53]), [97,75,47,61,53], 'make_valid_update_from()');
 
