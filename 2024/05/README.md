@@ -1,2 +1,3 @@
 - Part 1: 7024 - correct (Sat 14 Dec 2024)
 - Part 2: 4075 - too low (Sun 15 Dec 2024)
+- Part 2: 4151 - correct (Sun 15 Dec 2024)

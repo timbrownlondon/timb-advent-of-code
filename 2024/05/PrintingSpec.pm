@@ -105,8 +105,10 @@ sub make_valid_update_from {
 
   my @update_copy = @$update;
 
-  for my $rule (@{$self->rules()}){
-    $self->modify_update_for_rule(\@update_copy, $rule) unless $self->update_obeys_rule(\@update_copy, $rule);
+  while ( ! $self->update_is_valid(\@update_copy)){
+    for my $rule (@{$self->rules()}){
+      $self->modify_update_for_rule(\@update_copy, $rule) unless $self->update_obeys_rule(\@update_copy, $rule);
+    }
   }
   \@update_copy;
 }
@@ -119,13 +121,10 @@ sub modify_update_for_rule {
   my ($a, $b) = @$rule;
   my $a_position = $self->index_of($update, $a);
   my $b_position = $self->index_of($update, $b);
-# print 'index of a ', $self->index_of($update, $a), "\n";
-# print 'index of b ', $self->index_of($update, $b), "\n";
 
   $update->[$a_position] = $b;
   $update->[$b_position] = $a;
-# print Dumper $rule;
-# print Dumper $update;
+
   $update;
 }
 
@@ -143,7 +142,9 @@ sub sum_of_middle_element_of_invalid_updates {
 
   my $sum = 0;
   for my $update (@{$self->invalid_updates()}){
-    $sum += $self->middle_element_of( $self->make_valid_update_from($update) );
+    my $fixed_update = $self->make_valid_update_from($update);
+    $sum += $self->middle_element_of($fixed_update);
+    die unless $self->update_is_valid($fixed_update);
   }
   $sum;
 }
