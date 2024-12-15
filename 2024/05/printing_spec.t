@@ -1,10 +1,10 @@
 use Test::More tests => 11;
 use lib '.';
 use Data::Dumper;
+use_ok PrintingSpec;
+use strict;
 
-use_ok PrintingSpec;;
-
-my $rules = <<END_RULES;
+my $rules_str = <<END_RULES;
 47|53
 97|13
 97|61
@@ -27,8 +27,9 @@ my $rules = <<END_RULES;
 75|13
 53|13
 END_RULES
+my @rules = split /\n/, $rules_str;
 
-my $updates = <<END_UPDATES;
+my $updates_str = <<END_UPDATES;
 75,47,61,53,29
 97,61,53,29,13
 75,29,13
@@ -36,8 +37,9 @@ my $updates = <<END_UPDATES;
 61,13,29
 97,13,75,29,47
 END_UPDATES
+my @updates = split /\n/, $updates_str;
 
-my $PS = PrintingSpec->new($rules, $updates);
+my $PS = PrintingSpec->new(\@rules, \@updates);
 
 # print Dumper $PS;
 
