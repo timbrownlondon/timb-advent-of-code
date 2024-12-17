@@ -19,6 +19,17 @@ sub new_from_string{
   $self;
 }
 
+sub show {
+  my $self = shift;
+
+  for my $y (0..$self->height() -1){
+    for my $x (0..$self->width() -1){
+      print $self->grid()->[$y][$x];
+    }
+    print "\n";
+  }
+}
+
 sub width {
   my $self = shift;
   length $self->{lines}->[0];
@@ -50,8 +61,8 @@ sub start_y_position {
 
   my $y = 0;
   for my $line (@{$self->{lines}}){
-    print $line, "\n";
     if( $line =~ m/\^/ ){
+      $self->y_direction(-1);
       $self->{start_y_position} = $y;
       return $y;
     }
@@ -77,7 +88,25 @@ sub start_x_position {
   die 'cannot find start_x_position';
 }
 
+sub move_one_place {
+  my $self = shift;
 
+
+}
+
+sub x_direction {
+  my ($self, $direction) = @_;
+
+  $self->{x_direction} = $direction if $direction;
+  $self->{x_direction} or 0;;
+}
+
+sub y_direction {
+  my ($self, $direction) = @_;
+
+  $self->{y_direction} = $direction if $direction;
+  $self->{y_direction} or 0;;
+}
 
 
 1;
