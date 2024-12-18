@@ -202,4 +202,16 @@ sub count_visited_cells {
   return $count;
 }
 
+sub cells_with_char {
+  my ($self, $char) = @_;
+
+  my @cells;
+  for my $y (0..$self->height() -1){
+    for my $x (0..$self->width() -1){
+      push @cells, [$x,$y] if $self->grid()->[$y][$x] eq $char;
+    }
+  }
+  \@cells;
+}
+
 1;
