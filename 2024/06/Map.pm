@@ -115,7 +115,6 @@ sub move_one_place {
   # look ahead and change direction if # is in the way
   my $next_x = $x + $self->x_direction();
   my $next_y = $y + $self->y_direction();
-  # print "LOOK $next_x $next_y ", $self->grid()->[$next_y][$next_x], "\n";
 
   $self->turn_right() if $self->grid()->[$next_y][$next_x] eq '#';
 
@@ -133,7 +132,6 @@ sub turn_right {
 
   my $new_x = -1 * $self->y_direction();
   my $new_y =  $self->x_direction();
-  print "NEW: $new_x $new_y\n";
 
   $self->x_direction( $new_x );
   $self->y_direction( $new_y );
