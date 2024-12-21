@@ -14,6 +14,15 @@ sub new_from_string {
   bless $self, $class;
 }
 
+sub number_of_operators {
+  my ($self, $n) = @_;
+
+  $self->{number_of_operators} = $n if defined $n;
+  die 'number_of_operators() should be set to 2 or 3'
+    unless $self->{number_of_operators} == 2 or $self->{number_of_operators} == 3;;
+  $self->{number_of_operators};
+}
+
 sub result{
   my $self = shift;
   $self->{result};
@@ -44,6 +53,7 @@ sub evaluate {
 
     $total += $num if $op == 0;
     $total *= $num if $op == 1;
+    $total .= $num if $op == 2;
   }
   return $total;
 }
@@ -79,17 +89,28 @@ sub operator_lists {
 
   return $self->{operator_lists} if $self->{operator_lists};
 
-  my $length = @{$self->{numbers}} - 1;
-  my $count = 2 ** $length - 1;
+  my $count = $self->number_of_operators() ** (@{$self->{numbers}} - 1) - 1;
 
   my @op_lists;
-
   for my $i (0 .. $count){
-    my @ops = map {0 + $_ } split '', sprintf "%0${length}b", $i;
-    push @op_lists, \@ops;
+    push @op_lists, $self->n_as_base_array($i, []);
   }
   $self->{operator_lists} = \@op_lists;
 }
 
+sub n_as_base_array {
+  my ($self, $n, $arr) = @_;
+
+  my $base = $self->number_of_operators();
+  my $length = @{$self->{numbers}} - 1;
+
+  my $remainder = $n % $base;
+# print "$n % $base is $remainder\n";
+  push @$arr, $remainder;
+
+  return $arr if @$arr >= $length;
+
+  n_as_base_array($self, int($n / $base), $arr);
+}
 
 1;
