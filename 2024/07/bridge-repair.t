@@ -1,4 +1,4 @@
-use Test::More tests => 2;
+use Test::More tests => 3;
 use lib '.';
 use Data::Dumper;
 use_ok BridgeRepair;
@@ -16,6 +16,12 @@ my $str = <<ENDSTR;
 292: 11 6 16 20
 ENDSTR
 
-my $BR = BridgeRepair->new_from_string($str);
+{
+  my $BR = BridgeRepair->new_from_string(2, $str);
+  is($BR->total(), 3749, 'total() is 3749 for 2 operators');
+}
 
-is($BR->total(), 3749, 'total() is 3749');
+{
+  my $BR = BridgeRepair->new_from_string(3, $str);
+  is($BR->total(), 11387, 'total() is 11387 for 3 operators');
+}

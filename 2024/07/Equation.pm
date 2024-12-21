@@ -105,7 +105,6 @@ sub n_as_base_array {
   my $length = @{$self->{numbers}} - 1;
 
   my $remainder = $n % $base;
-# print "$n % $base is $remainder\n";
   push @$arr, $remainder;
 
   return $arr if @$arr >= $length;

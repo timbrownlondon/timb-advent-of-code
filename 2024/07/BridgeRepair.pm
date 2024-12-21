@@ -5,11 +5,13 @@ use Equation;
 use Data::Dumper;
 
 sub new_from_string{
-  my ($class, $str) = @_;
+  my ($class, $number_of_operators, $str) = @_;
 
   my @lines;
   for (split /\n/, $str){
-    push @lines, Equation->new_from_string($_);
+    my $eq =Equation->new_from_string($_);
+    $eq->number_of_operators($number_of_operators);
+    push @lines, $eq;
   }
   my $self;
   $self->{string} = $str;

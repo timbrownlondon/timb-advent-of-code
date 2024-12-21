@@ -1,1 +1,2 @@
-- Part 1: 53,8191,549,061 - correct, Friday 20 December 2024
+- Part 1:    538,191,549,061 - correct, Friday 20 December 2024
+- Part 2: 34,612,812,972,206 - correct, Saturday 21 December 2024

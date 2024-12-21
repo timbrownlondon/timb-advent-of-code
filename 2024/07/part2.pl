@@ -6,7 +6,7 @@ use lib '.';
 use BridgeRepair;
 
 my $lines = join '', <>;
-my $BR = BridgeRepair->new_from_string(2, $lines);
+my $BR = BridgeRepair->new_from_string(3, $lines);
 
 print $BR->total(), "\n";
 
