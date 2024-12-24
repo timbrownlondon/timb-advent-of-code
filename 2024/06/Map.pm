@@ -228,7 +228,11 @@ sub add_to_route {
 sub is_loop {
   my $self = shift;
 
-  return  scalar keys %{$self->{uniq_points}} != scalar @{$self->route()};
+  #  return  scalar keys %{$self->{uniq_points}} != scalar @{$self->route()};
+  for my $count (values %{$self->{uniq_points}}){
+    return 1 if $count > 1;
+  }
+  0;
 }
 
 1;
