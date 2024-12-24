@@ -1,5 +1,7 @@
 package Map;
 use strict;
+use lib '.';
+use Direction;
 use Data::Dumper;
 
 sub new_from_string{
@@ -17,6 +19,7 @@ sub new_from_string{
   bless $self, $class;
 
   # init some stuff TODO - tidy this
+  $self->direction(Direction->new('up'));
   $self->start_x_position();
 
   $self;
@@ -57,6 +60,14 @@ sub grid {
   $self->{grid} = \@collector;
 }
 
+sub direction {
+  my ($self, $direction) = @_;
+
+  $self->{direction} = $direction if $direction;
+
+  $self->{direction};
+}
+
 sub start_y_position {
   my $self = shift;
 
@@ -65,7 +76,6 @@ sub start_y_position {
   my $y = 0;
   for my $line (@{$self->{lines}}){
     if( $line =~ m/\^/ ){
-      $self->y_direction(-1);
       $self->{start_y_position} = $y;
       $self->y_position($y);
       return $y;
@@ -84,7 +94,6 @@ sub start_x_position {
   my $x = 0;
   for my $char ( @{$self->grid()->[$y]} ){
     if( $char eq '^' ){
-      $self->x_direction(0);
       $self->{start_x_position} = $x;
       $self->x_position($x);
       return $x;
@@ -97,13 +106,13 @@ sub start_x_position {
 
 sub move_until_fall_off_grid {
   my $self = shift;
-  my $i =0;
+  my $i = 0;
   while( $self->position_is_on_grid() ){
     $self->move_one_place();
     $i++;
     return $i if $i > 10000;
   }
-  $i;
+  return scalar @{$self->route()};
 }
 
 sub move_one_place {
@@ -113,28 +122,20 @@ sub move_one_place {
   my $y = $self->y_position();
 
   # look ahead and change direction if # is in the way
-  my $next_x = $x + $self->x_direction();
-  my $next_y = $y + $self->y_direction();
+  my $next_x = $x + $self->direction()->x_move();
+  my $next_y = $y + $self->direction()->y_move();
 
-  $self->turn_right() if $self->grid()->[$next_y][$next_x] eq '#';
+  $self->direction()->turn_right() if $self->grid()->[$next_y][$next_x] eq '#' or 
+                                      $self->grid()->[$next_y][$next_x] eq 'O';
 
-  # set current position to X
-  $self->set_cell($x, $y, 'X');
+  my $char = $self->direction()->char();
+  $self->set_cell($x, $y, $char);
   
   # move
-  $self->update_x_by( $self->x_direction() );
-  $self->update_y_by( $self->y_direction() );
+  $self->update_x_by( $self->direction()->x_move() );
+  $self->update_y_by( $self->direction()->y_move() );
 
-}
-
-sub turn_right {
-  my $self = shift;
-
-  my $new_x = -1 * $self->y_direction();
-  my $new_y =  $self->x_direction();
-
-  $self->x_direction( $new_x );
-  $self->y_direction( $new_y );
+  $self->add_to_route($x, $y, $char);
 }
 
 sub position_is_on_grid {
@@ -194,7 +195,7 @@ sub count_visited_cells {
   my $count = 0;
   for my $y (0..$self->height() -1){
     for my $x (0..$self->width() -1){
-      $count++ if $self->grid()->[$y][$x] eq 'X';
+      $count++ if Direction->is_visited_char( $self->grid()->[$y][$x] );
     }
   }
   return $count;
@@ -210,6 +211,24 @@ sub cells_with_char {
     }
   }
   \@cells;
+}
+
+sub route {
+  my $self = shift;
+  $self->{route};
+}
+
+sub add_to_route {
+  my ($self, $x, $y, $d) = @_;
+
+  $self->{uniq_points}->{"$x $y $d"}++;
+  push @{$self->{route}}, [$x, $y, $d];
+}
+
+sub is_loop {
+  my $self = shift;
+
+  return  scalar keys %{$self->{uniq_points}} != scalar @{$self->route()};
 }
 
 1;

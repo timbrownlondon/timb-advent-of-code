@@ -6,7 +6,7 @@ use lib '.';
 use Map;
 
 my $lines = join '', <>;
-my $MAP = Map->new_from_string($lines);
+my $original = Map->new_from_string($lines);
 
 
 # how do we detect new barriers that cause a loop?
@@ -23,8 +23,30 @@ my $MAP = Map->new_from_string($lines);
 #  are on a loop
 #  that means we need to store cell position and direction for each cell
 #  visited
+#
+#  →
+#  ←
+#  ↑
+#  ↓
 
-$MAP->move_until_fall_off_grid();
-$MAP->show();
+$original->move_until_fall_off_grid();
 
-print $MAP->count_visited_cells(), "\n";
+# iterate along original route
+# trying each point as a barrier
+for my $point ( @{$original->route()} ){
+  
+  my $candidate = Map->new_from_string($lines);
+  my ($x,$y, $ch) = @$point;
+
+  $candidate->set_cell($x,$y,'O'); 
+
+  while ( $candidate->move_one_place() ){
+    if ( $candidate->is_loop() ){
+      print "found loop for ($x, $y)\n";
+      $candidate->show();
+      last;
+    }
+    last unless $candidate->position_is_on_grid();
+  }
+}
+
