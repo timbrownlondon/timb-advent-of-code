@@ -49,7 +49,7 @@ for my $point ( @{$original->route()} ){
       last;
     }
     unless ($candidate->position_is_on_grid() ){
-      print "no loop for ($x, $y) last position (",$candidate->x_position(), ', ', $candidate->y_position(), ")\n"; 
+      # print "no loop for ($x, $y) last position (",$candidate->x_position(), ', ', $candidate->y_position(), ")\n"; 
       last;
     }
   }

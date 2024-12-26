@@ -43,7 +43,7 @@ is_deeply($MAP->cells_with_char('#'), [[4,0],[9,1],[2,3],[7,4],[1,6],[8,7],[0,8]
 ok($MAP->add_to_route(0,1,'↑'), 'add_to_route(0,1,↑)');
 ok($MAP->add_to_route(2,3,'↓'), 'add_to_route(2,3,↓)');
 
-print Dumper $MAP;
+# print Dumper $MAP;
 ok(! $MAP->is_loop(), 'is_loop() is false');
 
 $MAP->show();

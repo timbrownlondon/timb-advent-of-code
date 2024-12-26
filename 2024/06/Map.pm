@@ -121,13 +121,10 @@ sub move_one_place {
   my $x = $self->x_position();
   my $y = $self->y_position();
 
-  # look ahead and change direction if # is in the way
-  my $next_x = $x + $self->direction()->x_move();
-  my $next_y = $y + $self->direction()->y_move();
-
-  unless ($next_x == -1 or $next_y == -1){
-    $self->direction()->turn_right() if $self->grid()->[$next_y][$next_x] eq '#' or 
-                                        $self->grid()->[$next_y][$next_x] eq 'O';
+  my $i = 0;
+  while ( $self->is_barrier__ahead() ){
+    $self->direction()->turn_right();
+    die 'turned right too many times' if ++$i > 4;
   }
 
   my $char = $self->direction()->char();
@@ -138,6 +135,24 @@ sub move_one_place {
   $self->update_y_by( $self->direction()->y_move() );
 
   $self->add_to_route($x, $y, $char);
+}
+
+sub is_barrier__ahead {
+  my $self = shift;
+
+  # look ahead to see if there is a barrier
+  my $x_ahead = $self->x_position() + $self->direction()->x_move();
+  my $y_ahead = $self->y_position() + $self->direction()->y_move();
+
+  return 0 if $x_ahead < 0;
+  return 0 if $y_ahead < 0;
+  return 0 if $x_ahead >= $self->width();
+  return 0 if $y_ahead >= $self->height();
+
+  return 1 if $self->grid()->[$y_ahead][$x_ahead] eq '#';
+  return 1 if $self->grid()->[$y_ahead][$x_ahead] eq 'O';
+
+  return 0;
 }
 
 sub position_is_on_grid {
