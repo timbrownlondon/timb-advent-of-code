@@ -125,8 +125,10 @@ sub move_one_place {
   my $next_x = $x + $self->direction()->x_move();
   my $next_y = $y + $self->direction()->y_move();
 
-  $self->direction()->turn_right() if $self->grid()->[$next_y][$next_x] eq '#' or 
-                                      $self->grid()->[$next_y][$next_x] eq 'O';
+  unless ($next_x == -1 or $next_y == -1){
+    $self->direction()->turn_right() if $self->grid()->[$next_y][$next_x] eq '#' or 
+                                        $self->grid()->[$next_y][$next_x] eq 'O';
+  }
 
   my $char = $self->direction()->char();
   $self->set_cell($x, $y, $char);
@@ -222,17 +224,18 @@ sub add_to_route {
   my ($self, $x, $y, $d) = @_;
 
   $self->{uniq_points}->{"$x $y $d"}++;
+
+  if ($self->{uniq_points}->{"$x $y $d"} > 1 ){
+    $self->{loop_start} = [$x, $y, $d];
+  }
+
   push @{$self->{route}}, [$x, $y, $d];
 }
 
 sub is_loop {
   my $self = shift;
 
-  #  return  scalar keys %{$self->{uniq_points}} != scalar @{$self->route()};
-  for my $count (values %{$self->{uniq_points}}){
-    return 1 if $count > 1;
-  }
-  0;
+  $self->{loop_start};
 }
 
 1;

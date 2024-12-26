@@ -12,3 +12,5 @@ $MAP->move_until_fall_off_grid();
 $MAP->show();
 
 print $MAP->count_visited_cells(), "\n";
+print 'route length: ', scalar @{$MAP->route()}, "\n";
+print 'last position: ', $MAP->x_position(), ', ', $MAP->y_position(), "\n";

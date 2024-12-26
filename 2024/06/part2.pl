@@ -42,11 +42,16 @@ for my $point ( @{$original->route()} ){
 
   while ( $candidate->move_one_place() ){
     if ( $candidate->is_loop() ){
-      print "found loop for ($x, $y)\n";
-      $candidate->show();
+      print "found loop for ($x, $y) ";
+      my $loop_start = $candidate->is_loop();
+      print 'loop start at ', $loop_start->[0], ', ', $loop_start->[1], ', ',$loop_start->[2];
+      print ' route length: ', scalar @{$candidate->route()}, "\n";
       last;
     }
-    last unless $candidate->position_is_on_grid();
+    unless ($candidate->position_is_on_grid() ){
+      print "no loop for ($x, $y) last position (",$candidate->x_position(), ', ', $candidate->y_position(), ")\n"; 
+      last;
+    }
   }
 }
 
