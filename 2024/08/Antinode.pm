@@ -1,7 +1,5 @@
 package Antinode;
 use strict;
-# use lib '.';
-# use Direction;
 use Data::Dumper;
 
 sub new_from_string{
@@ -17,6 +15,11 @@ sub new_from_string{
   $self->{lines} = \@trimmed;
 
   bless $self, $class;
+}
+
+sub include_harmonics {
+  my ($self, $bool) = @_;
+  $self->{harmonics} = $bool;
 }
 
 sub width {
@@ -88,6 +91,31 @@ sub antinodes_for_pair {
   [[2 * $ax - $bx, 2 * $ay - $by],[2 * $bx - $ax, 2 * $by - $ay]];
 }
 
+sub antinodes_for_pair_with_harmonics {
+  my ($self, $a, $b) = @_;
+
+  my ($ax, $ay) = @$a;
+  my ($bx, $by) = @$b;
+
+  my $delta_x = $ax - $bx;
+  my $delta_y = $ay - $by;
+
+  my @points;
+
+  
+  my $intervals = int($self->width() / abs($delta_x));
+  $intervals = int($self->height() / abs($delta_y)) if int($self->height() / abs($delta_y)) > $intervals;
+  
+  for my $i (-1 * $intervals .. $intervals){
+    my $pt = [$i * $delta_x + $ax, $i * $delta_y + $ay];
+    # next if $pt->[0] == $ax and $pt->[1] == $ay;
+    # next if $pt->[0] == $bx and $pt->[1] == $by;
+
+    push @points, $pt if $self->is_on_grid($pt);
+  }
+  \@points;
+}
+
 sub antinodes_for_char {
   my ($self, $char) = @_;
 
@@ -96,8 +124,9 @@ sub antinodes_for_char {
 
   for my $i (0 .. scalar @points -1){
     for my $j ($i +1  .. scalar @points -1){
-      # print 'pairing : ', $points[$i][0],',',$points[$i][1], ' with ', $points[$j][0],',',$points[$j][1], "\n";
-      push @collect, @{$self->antinodes_for_pair($points[$i], $points[$j])};
+      $self->{harmonics} ?
+        push @collect, @{$self->antinodes_for_pair_with_harmonics($points[$i], $points[$j])} :
+        push @collect, @{$self->antinodes_for_pair($points[$i], $points[$j])};
     }
   }
   \@collect;
@@ -125,4 +154,23 @@ sub antinode_count {
   }
   $count;
 }
+
+sub show_antinodes {
+  my $self = shift;
+
+  my $grid;
+  for my $antinode (@{$self->all_antinodes()}){
+
+    $grid->[$antinode->[0]]->[$antinode->[1]] = '#';
+  }
+
+  for my $y (0 .. $self->height() -1){
+    for my $x (0 .. $self->width() -1){
+      $grid->[$x]->[$y] ?
+        print '#' : print '.';
+    }
+    print "\n";
+  }
+}
+
 1;
