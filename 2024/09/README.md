@@ -1,0 +1,4 @@
+- Part 1: 15984205608276 - too high, 29 Dec 2024
+- Part 1: 6448989161244 - too high, 29 Dec 2024
+- Part 1: 6448723685319 - too low, 29 Dec 2024
+- Part 1: 6448989155953 - correct, 29 Dec 2024
