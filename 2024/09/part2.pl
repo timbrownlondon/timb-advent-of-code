@@ -7,6 +7,6 @@ use Data::Dumper;
 
 my $DF = Diskfragmenter->new_from_string(<>);
 
-$DF->move_blocks_forward();
+$DF->move_files_forward();
 
-print $DF->checksum_part1(), "\n";
+print $DF->checksum_part2(), "\n";
