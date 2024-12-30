@@ -37,8 +37,8 @@ is_deeply($ANT->antinodes_for_pair([0,0],[3,2]), [[-3,-2],[6,4]], 'antinodes_for
 is_deeply($ANT->antinodes_for_pair([0,4],[3,2]), [[-3,6],[6,0]], 'antinodes_for_pair([0,4],[3,2])');
 
 is($ANT->antinode_count(), 14, 'antinode_count() is 14');
+$ANT->show_antinodes();
 
 $ANT->include_harmonics(1);
 is($ANT->antinode_count(), 34, 'antinode_count() is 34 with harmonics');
-
 $ANT->show_antinodes();

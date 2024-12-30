@@ -160,7 +160,7 @@ sub show_antinodes {
 
   my $grid;
   for my $antinode (@{$self->all_antinodes()}){
-
+    next unless $self->is_on_grid($antinode);
     $grid->[$antinode->[0]]->[$antinode->[1]] = '#';
   }
 
