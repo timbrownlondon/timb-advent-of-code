@@ -97,7 +97,7 @@ sub move_files_forward {
     my $file  = $self->find_file_to_fit($space);
 
     if ($file) {
-      print "$i: moving id ", $file->{id}, "\n";
+      print "$i: moving id ", $file->{id}, ' (from ', $file->{start}, ' to ', $space->{start},")\n";
       $file->{moved} = 1;
       $file->{start} = $space->{start};
       $space->{length} = $space->{length} - $file->{length};
@@ -116,6 +116,7 @@ sub find_file_to_fit {
 
   for my $file ( reverse @{$self->{files}}){
     next unless defined $file->{id};
+    next if $file->{moved};
     return 0 if $space->{start} > $file->{start};
     return $file if $file->{length} <= $space->{length};
   }
