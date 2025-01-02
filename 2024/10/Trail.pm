@@ -58,8 +58,8 @@ sub start_nodes {
   return $self->{start_nodes} if $self->{start_nodes};
 
   my @nodes;
-  for my $x (0..$self->width() -1){
-    for my $y (0..$self->height() -1){
+  for my $y (0..$self->height() -1){
+    for my $x (0..$self->width() -1){
       push @nodes, Node->new($x,$y) if $self->grid()->[$y][$x] == 0;
     }
   }
@@ -74,7 +74,7 @@ sub find_paths {
   return $self->{paths} if $self->{paths};
 
   for my $node ( @{$self->start_nodes()} ){
-    $self->add_children_to($node);
+    $self->find_children($node);
   }
   $self->{paths} = $self->start_nodes();
 }
@@ -85,7 +85,7 @@ sub path_count {
   $self->{complete_paths};
 }
 
-sub add_children_to {
+sub find_children {
   my ($self, $node) = @_;
 
   if ($node->val() == 9){
@@ -93,15 +93,27 @@ sub add_children_to {
     $self->{complete_paths}++;
     return;
   }
-
   for my $candidate ( @{$self->points_to_consider($node)} ){
-    print join ', ', $candidate->x(), $candidate->y(), $candidate->val(), "\n";
+  # print join ', ', $candidate->x(), $candidate->y(), $candidate->val(), "\n";
     if ($candidate->val() == $node->val() + 1){
       $node->add_child($candidate);
-      $self->add_children_to($candidate);
+    # $candidate->parent($node);
+      $self->find_children($candidate);
     }
   }
 }
+
+sub dedupe_paths {
+  my $self = shift;
+
+  for my $node ( @{$self->start_nodes()} ){
+    
+
+  }
+}
+
+
+
 
 sub points_to_consider {
   my ($self, $node) = @_;
@@ -113,8 +125,8 @@ sub points_to_consider {
   my @array;
   push @array, Node->new($node->x()-1,$node->y()) if $node->x() > 0;
   push @array, Node->new($node->x()+1,$node->y()) if $node->x() < $self->width() -1;
-  push @array, Node->new($node->x(),$node->y()+1) if $node->y() > 0;
-  push @array, Node->new($node->x(),$node->y()-1) if $node->y() < $self->height() -1;
+  push @array, Node->new($node->x(),$node->y()-1) if $node->y() > 0;
+  push @array, Node->new($node->x(),$node->y()+1) if $node->y() < $self->height() -1;
   \@array;
 }
 
@@ -123,7 +135,7 @@ sub show {
 
   for my $y (0..$self->height() -1){
     for my $x (0..$self->width() -1){
-      print $self->grid()->[$y][$x];
+      print $self->grid()->[$y][$x], '-';
     }
     print "\n";
   }
@@ -133,8 +145,10 @@ sub show_nodes {
   my $self = shift;
 
   for my $node ( @{$self->start_nodes()} ){
-    $node->str('');
+    print $node->path('');
   }
 }
+
+
 
 1;

@@ -1,4 +1,4 @@
-use Test::More tests => 9;
+use Test::More tests => 10;
 use lib '.';
 use Data::Dumper;
 use_ok Trail;
@@ -27,10 +27,14 @@ is( $T->value_of([-1,-1]), undef, 'value_of([-1,-1] is undef' );
 
 Node->set_grid( $T->grid() );
 
-is ( Node->new(0,0)->val(), 8, 'Node->new(0,0)->val() is 8' );
-is ( Node->new(1,5)->val(), 2, 'Node->new(1,5)->val() is 2' );
+is( Node->new(0,0)->val(), 8, 'Node->new(0,0)->val() is 8' );
+is( Node->new(1,5)->val(), 2, 'Node->new(1,5)->val() is 2' );
+
+is( @{$T->start_nodes()}, 9, 'start_nodes() returns 9 items' );
 
 $T->find_paths();
-print $T->path_count(), "\n";
 
 $T->show_nodes();
+# $T->show();
+
+print $T->path_count(), "\n";

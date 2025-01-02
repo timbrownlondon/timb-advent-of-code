@@ -35,6 +35,14 @@ sub add_child {
    }
 }
 
+sub parent {
+   my ($self, $parent) = @_;
+   
+   $self->{parent} = $parent;
+ }
+
+
+
 sub str {
   my ($self, $indent) = @_;
 
@@ -43,4 +51,16 @@ sub str {
     $child->str( $indent . ' ' );
   }
 }
+
+sub path {
+  my ($self, $str) = @_;
+
+  my $path = $str . '('. $self->x().','. $self->y(). ')'. $self->val();;
+  for my $child ( @{$self->{children}} ){
+    $child->path( $path );
+  }
+  warn "$path\n" if $self->val() == 9;
+  return $path 
+}
+
 1;
