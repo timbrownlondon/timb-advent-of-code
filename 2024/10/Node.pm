@@ -35,21 +35,17 @@ sub add_child {
    }
 }
 
-sub parent {
-   my ($self, $parent) = @_;
+sub children {
+   my $self = shift;
    
-   $self->{parent} = $parent;
+   $self->{children}  or [];
  }
 
 
+sub as_string {
+  my $self = shift;
 
-sub str {
-  my ($self, $indent) = @_;
-
-  print $indent, '(', $self->x(),',', $self->y(), ') ',  $self->val(), "\n";
-  for my $child ( @{$self->{children}} ){
-    $child->str( $indent . ' ' );
-  }
+   '('. $self->x().','. $self->y(). ')'. $self->val();
 }
 
 sub path {
@@ -61,6 +57,29 @@ sub path {
   }
   warn "$path\n" if $self->val() == 9;
   return $path 
+}
+
+
+sub walk {
+  my ($self, $str) = @_;
+
+  $str .= $self->as_string().'=';
+
+  print "$str\n" unless scalar @{$self->children()};
+
+  for my $child (@{$self->children()}){
+    walk($child, $str);
+  }
+}
+
+sub find_nines {
+  my ($self, $nines) = @_;
+
+  push @$nines, $self if $self->val() == 9;
+  for my $child (@{$self->children()}){
+    $child->find_nines($nines);
+  }
+  return $nines;
 }
 
 1;

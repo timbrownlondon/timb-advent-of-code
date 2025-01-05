@@ -79,12 +79,6 @@ sub find_paths {
   $self->{paths} = $self->start_nodes();
 }
 
-
-sub path_count {
-  my $self = shift;
-  $self->{complete_paths};
-}
-
 sub find_children {
   my ($self, $node) = @_;
 
@@ -145,8 +139,26 @@ sub show_nodes {
   my $self = shift;
 
   for my $node ( @{$self->start_nodes()} ){
-    print $node->path('');
+    print $node->as_string(), "\n";
+    for my $nine (@{$node->find_nines([])}){
+      print '    ', $nine->as_string(), "\n";
+    }
+    print "-------\n";
   }
+}
+
+sub count_nines {
+  my $self = shift;
+
+  my $count = 0;
+  for my $node ( @{$self->start_nodes()} ){
+    my $dedupe;
+    for my $nine (@{$node->find_nines([])}){
+      $dedupe->{$nine->as_string()}++;
+    }
+    $count += scalar keys %$dedupe;
+  }
+  $count;
 }
 
 
