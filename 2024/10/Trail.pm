@@ -161,6 +161,12 @@ sub count_nines {
   $count;
 }
 
+sub distinct_trails {
+  my $self = shift;
+
+  $self->{complete_paths};
+}
+
 
 
 1;

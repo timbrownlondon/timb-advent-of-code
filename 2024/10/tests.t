@@ -1,4 +1,4 @@
-use Test::More tests => 12;
+use Test::More tests => 13;
 use lib '.';
 use Data::Dumper;
 use_ok Trail;
@@ -36,4 +36,4 @@ is( @{$T->start_nodes()}, 9, 'start_nodes() returns 9 items' );
 $T->find_paths();
 
 is( $T->count_nines(), 36, 'count_nines() is 36' );
-
+is( $T->distinct_trails(), 81, 'distinct_trails() is 81' );
