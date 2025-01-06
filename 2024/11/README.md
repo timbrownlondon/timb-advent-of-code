@@ -1,2 +1,4 @@
 - Part 1: 220722 - correct, 5 Jan 2025
-- Part 1: 1094 - correct, 5 Jan 2025
+- Part 2: 282420901960869 - too high, 6 Jan 2025
+- Part 2: 149208 - too low, 6 Jan 2025
+- Part 2: 261952051690787 - correct, 6 Jan 2025
