@@ -32,3 +32,5 @@ $R->show_100_positions();
 print Dumper $R->count_quadrants();
 
 is( $R->safety_factor(), 12, 'safety_factor() is 12,' );
+
+$R->show();
