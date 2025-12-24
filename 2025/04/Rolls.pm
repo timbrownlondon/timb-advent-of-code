@@ -57,5 +57,16 @@ sub at {
   return substr($row, $x, 1);
 }
 
+sub remove_roll_at {
+  my ($self, $x, $y) = @_;
+  
+  return if $x < 0;
+  return if $y < 0;
+  return if $x >= $self->row_count();
+  return if $y >= $self->col_count();
+
+  substr($self->{map}->[$y], $x, 1) = '.';
+}
+
 
 1;

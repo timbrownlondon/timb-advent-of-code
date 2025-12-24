@@ -38,6 +38,10 @@ is($R->at(-1,-1), '', "item at(-1,-1) is ''");
 is($R->neighbours(1,1), '..@@@@@@', 'neighbours(1,1) is ..@@@@@@');
 is($R->occupied_neighbour_count(1,1), 6, 'occupied_neighbour_point(1,1) is 6');
 
+is($R->at(4,2), '@', 'item at(4,2) is @');
+is($R->remove_roll_at(4,2), '.', 'remove_roll_at(4,2)');
+is($R->at(4,2), '.', 'item at(4,2) is now .');
+
 #################
 
 my $R2 = Rolls->new(qw(123 456 789));
