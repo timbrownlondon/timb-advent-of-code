@@ -11,7 +11,12 @@ my $tracks = [];
 
 $M->timelines(0,$M->S_column(),'', $tracks);
 
-print 'Timeslines: ', scalar @$tracks, "\n";
+# print 'Timeslines: ', scalar @$tracks, "\n";
+
+my $memo = {};
+my $num_paths = $M->count_paths(0, $M->S_column(), $memo);
+
+print "Count paths $num_paths\n";
 
 # my $dedupe;
 # for my $t (@$tracks){

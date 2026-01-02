@@ -63,6 +63,32 @@ sub timelines {
   }
 }
 
+sub count_paths {
+  my ($self, $row, $col, $memo) = @_;
+
+  # Base case: reached beyond the grid
+  return 1 if $row > $self->height();
+
+  # Check memoization cache
+  my $key = "$row,$col";
+  return $memo->{$key} if exists $memo->{$key};
+
+  my $count = 0;
+
+  # Branch point
+  if ($self->is_carat_at($row, $col)) {
+    $count += $self->count_paths($row+1, $col-1, $memo);
+    $count += $self->count_paths($row+1, $col+1, $memo);
+  }
+  else {
+    $count += $self->count_paths($row+1, $col, $memo);
+  }
+
+  # Store in cache
+  $memo->{$key} = $count;
+  return $count;
+}
+
 
 sub print_matrix {
   my $self = shift;
