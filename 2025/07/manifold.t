@@ -5,7 +5,7 @@ use_ok Manifold;
 use strict;
 
 open my $IN, '<', 'test-input' or die $!;
-my $M= Manifold->new(<$IN>);
+my $M = Manifold->new(<$IN>);
 close $IN;
 
 isa_ok($M, 'Manifold');

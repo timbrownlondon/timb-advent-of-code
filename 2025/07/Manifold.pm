@@ -42,6 +42,28 @@ sub split_count {
   return $count;
 }
 
+sub timelines {
+  my ($self, $row, $col, $current_track, $all_tracks) = @_;
+
+  $current_track .= "($row,$col)";
+
+  # a track has been completed
+  if ($row > $self->height()){
+    push @$all_tracks, $current_track;
+    return;
+  }
+
+  # we are at a branch (carat signifies branching)
+  if ($self->is_carat_at($row, $col)){
+    $self->timelines($row+1, $col-1, $current_track, $all_tracks);
+    $self->timelines($row+1, $col+1, $current_track, $all_tracks);
+  }
+  else {
+    $self->timelines($row+1, $col, $current_track, $all_tracks);
+  }
+}
+
+
 sub print_matrix {
   my $self = shift;
 
