@@ -17,17 +17,21 @@ my $p3 = Point->new(1,2,3);
 is($C->distance_squared($p1,$p2), 0, 'distance_squared($p1,$p2) is 0');
 is($C->distance_squared($p1,$p3), 14, 'distance_squared($p1,$p3) is 14');
 
-is_deeply($C->closest_points(), [0,19], 'closest_points OK');
+is_deeply($C->ordered_pairs()->[0], {i=>0,j=>19,dist=>100427}, 'ordered_pairs()->[0] OK');
 
+is($C->step(0), 'points 0 and 19 added to new group 1', 'points 0 and 19 added to new group 1');
+is($C->step(1), 'point 7 added to group 1', 'point 7 added to group 1');
+is($C->step(2), 'points 2 and 13 added to new group 2', 'points 2 and 13 added to new group 2');
+is($C->step(3), 'points 7 and 19 are already in same group 1', 'points 7 and 19 are already in same group 1');
 
-# warn Dumper $C->ordered_pairs();
-# warn Dumper $C->closest_points();
+$C->step(4);
+$C->step(5);
+$C->step(6);
+$C->step(7);
+$C->step(8);
 
-# for my $d (@{$C->ordered_pairs()}){
-# warn $d->{dist}, ' ', $d->{i}, ' ', $d->{j},"\n";
-# }
+is($C->step(9), 'points 2 and 18: groups 2 and 3 merged to be group 6', 'points 2 and 18: groups 2 and 3 merged to be group 6'); 
 
-# warn Dumper $C->point(0);
-# warn Dumper $C->point(19);
+is_deeply($C->group_sizes(),[ 5, 4, 2, 2 ], 'group_sizes() ok');; 
 
 done_testing();
