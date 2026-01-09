@@ -59,12 +59,12 @@ sub step {
 
   if (defined $i_assignment){
     $self->{assigned}->{$j} = $i_assignment;
-    return "point $j added to group $i_assignment";
+    return "point $j added to group $i_assignment (connect with point $i)";
   }
 
   if (defined $j_assignment){
     $self->{assigned}->{$i} = $j_assignment;
-    return "point $i added to group $j_assignment";
+    return "point $i added to group $j_assignment (connect with point $j)";
   }
   
   my $g = ++$self->{group_count};
@@ -82,6 +82,11 @@ sub groups {
     $g->{$assigned->{$point}}->{$point}++;
   }
   return $g;
+}
+
+sub max_group_size {
+  my $self = shift;
+  return $self->group_sizes()->[0];
 }
 
 sub group_sizes {

@@ -7,7 +7,8 @@ use strict;
 
 my $C = Circuits->new(<>);
 
-for my $i (0..999){
+#for my $i (0..999){
+for my $i (0..30){
   $C->step($i);
 }
 
